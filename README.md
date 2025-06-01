@@ -1,20 +1,32 @@
 # Sql-shield-Tz
 
-## How to Run the Flask App
+## Quick Start: Run the App (Windows & Linux)
 
-1. **Install dependencies** (if not already):
-   ```powershell
-   pip install -r requirements.txt
-   ```
+### 1. Prepare a Virtual Environment
 
-2. **Run the Flask server:**
-   ```powershell
-   python app.py
-   ```
-   The server will start at `http://127.0.0.1:5000` by default.
+#### Windows (PowerShell):
+```powershell
+python -m venv venv
+venv\Scripts\Activate
+```
 
-3. **Open the app:**
-   - Open `Template/index.html` in your browser (preferably served via a local web server for full functionality).
+#### Linux/macOS (bash):
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 2. Install Requirements
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run the Flask App
+```bash
+python app.py
+```
+
+The server will start at `http://127.0.0.1:5000` by default.
 
 ---
 
@@ -43,8 +55,16 @@
 
 > **Note:**
 > For full functionality (API calls), run the HTML files via a local web server (not by double-clicking). You can use Python's built-in server:
-> ```powershell
+> ```bash
 > cd Template
 > python -m http.server 8000
 > ```
 > Then visit `http://localhost:8000/index.html` in your browser.
+
+---
+
+## Example SQLMap Command
+
+```bash
+sqlmap -u "http://localhost:5000/login" --data="username=test&password=test" --risk=3 --level=5
+```
