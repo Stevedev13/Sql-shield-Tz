@@ -61,6 +61,18 @@
         .register-link:hover {
             text-decoration: underline;
         }
+        .loader {
+            border: 6px solid #e0e7ef;
+            border-top: 6px solid #2563eb;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -78,18 +90,31 @@
         <div id="login-message" style="color: red; text-align: center; margin-top: 10px;"></div>
         <a class="register-link" href="./register.html">Back</a>
     </div>
+    <div id="loading" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(255,255,255,0.7);z-index:2000;align-items:center;justify-content:center;">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+            <div class="loader"></div>
+            <span style="margin-top:16px;color:#374151;font-size:1.1em;">Loading...</span>
+        </div>
+    </div>
     <script>
+function showLoading() {
+    document.getElementById('loading').style.display = 'flex';
+}
+function hideLoading() {
+    document.getElementById('loading').style.display = 'none';
+}
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const messageDiv = document.getElementById('login-message');
     messageDiv.textContent = '';
+    showLoading();
     try {
         const response = await fetch('http://127.0.0.1:5000/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ username: email, password })
         });
         const data = await response.json();
         if (response.ok && data.success) {
@@ -100,7 +125,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     } catch (err) {
         messageDiv.textContent = 'Error connecting to server.';
     }
+    hideLoading();
 });
-</script>
+    </script>
 </body>
 </html>

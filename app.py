@@ -44,11 +44,16 @@ def init_db():
 
 def validate_input(*inputs):
     """Validate user input against common attack patterns"""
-    for input_str in inputs:
+    for idx, input_str in enumerate(inputs):
         if not isinstance(input_str, str):
             return False
-        if not re.match(r'^[\w.@+-]{3,50}$', input_str.strip()):
-            return False
+        if idx == 0:  # username
+            # Allow spaces, but not at start/end, no consecutive spaces, and only certain characters
+            if not re.match(r'^[A-Za-z0-9._@+-]+( [A-Za-z0-9._@+-]+)*$', input_str):
+                return False
+        else:
+            if not re.match(r'^[\w.@+-]{3,50}$', input_str.strip()):
+                return False
     return True
 
 @app.route('/')
@@ -67,11 +72,11 @@ def register():
             # Get data based on content type
             if request.is_json:
                 data = request.get_json()
-                username = data.get('username', '').strip()
+                username = data.get('username', '')  # do not strip()
                 email = data.get('email', '').strip()
                 password = data.get('password', '')
             else:
-                username = request.form.get('username', '').strip()
+                username = request.form.get('username', '')  # do not strip()
                 email = request.form.get('email', '').strip()
                 password = request.form.get('password', '')
 
