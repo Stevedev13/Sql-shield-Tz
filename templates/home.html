@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home - SQL Injection Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(120deg, #f8fafc 0%, #e0e7ef 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .home-container {
+            max-width: 500px;
+            margin: 80px auto 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 40px 32px 32px 32px;
+            text-align: center;
+        }
+        h2 {
+            color: #2d3748;
+            margin-bottom: 16px;
+        }
+        .desc {
+            color: #4b5563;
+            font-size: 1.1em;
+            margin-bottom: 24px;
+        }
+        .logout-link {
+            display: inline-block;
+            margin-top: 24px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .logout-link:hover {
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body>
+    <div class="home-container">
+        <h2>Welcome Home!</h2>
+        <div class="desc">
+            You have successfully logged in.<br>
+            This is the protected home page of the SQL Injection Demo project.
+        </div>
+        <a class="logout-link" href="/login" onclick="logoutUser(event)">Logout</a>
+    </div>
+    <script>
+    function logoutUser(event) {
+        event.preventDefault();
+        window.location.href = '/login';
+    }
+    </script>
+</body>
+</html>
