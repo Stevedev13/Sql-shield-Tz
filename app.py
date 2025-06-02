@@ -60,21 +60,25 @@ def login():
     if request.method == 'POST':
         if request.is_json:
             data = request.get_json()
-            email = data.get('username', '').strip()  # frontend sends 'username' field, use as email
+            username = data.get('username', '').strip()
             password = hashlib.md5(data.get('password', '').encode()).hexdigest()
+            query = "SELECT * FROM users WHERE username=? AND password=?"
+            params = (username, password)
         else:
-            email = request.form['username'].strip()  # frontend sends 'username' field, use as email
+            username = request.form['username'].strip()
             password = hashlib.md5(request.form['password'].encode()).hexdigest()
+            query = "SELECT * FROM users WHERE username=? AND password=?"
+            params = (username, password)
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE email=? AND password=?", (email, password))
+        cursor.execute(query, params)
         user = cursor.fetchone()
         conn.close()
         if user:
-            session['user'] = email
+            session['user'] = username
             if request.is_json:
                 return jsonify({'success': True, 'message': 'Login successful'}), 200
-            return f"<h1>Welcome, {email}!</h1><a href='/logout'>Logout</a>"
+            return f"<h1>Welcome, {username}!</h1><a href='/logout'>Logout</a>"
         else:
             if request.is_json:
                 return jsonify({'success': False, 'message': 'Invalid credentials'}), 401
